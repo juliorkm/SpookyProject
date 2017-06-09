@@ -32,9 +32,9 @@ public class Spawner : MonoBehaviour {
 			if (time >= cooldown) {
 				time -= cooldown;
 				if (Random.Range (0, 2) > 0)
-					Instantiate (enemies [0], new Vector3 (8, Random.Range (-5f, 0f)), Quaternion.identity);
+					Instantiate (enemies [0], new Vector3 (10, Random.Range (-5f, 0f)), Quaternion.identity);
 				else
-					Instantiate (enemies [0], new Vector3 (-8, Random.Range (-5f, 0f)), Quaternion.identity);
+					Instantiate (enemies [0], new Vector3 (-10, Random.Range (-5f, 0f)), Quaternion.identity);
 				enemiesSpawned++;
 				enemiesAlive++;
 			}

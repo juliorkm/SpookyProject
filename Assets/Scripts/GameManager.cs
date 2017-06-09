@@ -13,9 +13,11 @@ public class GameManager : MonoBehaviour {
 
 	public int enemiesInt = 0;
 
-	//private Transform[] hitboxes;
+    private CameraBehaviors cb;
 
-	IEnumerator GameOver() {
+    //private Transform[] hitboxes;
+
+    IEnumerator GameOver() {
 		//player.death ();
 		yield return new WaitForSeconds (1.5f);
 		StartCoroutine (toTitle ());
@@ -41,19 +43,21 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Start() {
-		//hitboxes = GameObject.Find ("Player").GetComponentsInChildren<Transform> (true);
-	}
+        //hitboxes = GameObject.Find ("Player").GetComponentsInChildren<Transform> (true);
+        cb = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviors>();
+    }
 
 	// Update is called once per frame
 	void Update () {
 	
-		/*
+		
 		if (Input.GetKeyDown (KeyCode.Alpha1) || Input.GetKeyDown (KeyCode.JoystickButton4))
-			spawnEnemy ();
+            cb.pulseCamera(.7f, .2f);
 		if (Input.GetKeyDown (KeyCode.Alpha2) || Input.GetKeyDown (KeyCode.JoystickButton5))
 			//player.health += 15;
 			spawnItens();
-		if (Input.GetKeyDown (KeyCode.Alpha3))
+        /*
+        if (Input.GetKeyDown (KeyCode.Alpha3))
 			//enemiesInt++;
 		if (Input.GetKeyDown (KeyCode.Alpha4)) {
 			foreach (Transform hb in hitboxes)

@@ -201,7 +201,7 @@ public class Player : MonoBehaviour {
 				anim.SetBool ("toAttack2", false);
 				anim.SetBool ("toAttack3", false);
 				stunned = true;
-                cb.pulseCamera(.7f,.2f);
+                //cb.pulseCamera(.7f,.2f);
 				rb.velocity = Vector2.zero;
 			}
 			stunnedFor -= Time.deltaTime;
@@ -305,6 +305,7 @@ public class Player : MonoBehaviour {
 			hitAnEnemy = true;
 			enemy.stunDuration = currentStun;
 			enemy.health -= currentDamage;
+            enemy.hitFrom = (transform.position.x < enemy.transform.position.x) ? false : true;
 			//StartCoroutine (enemy.hurt ());
 			//enemy.stunned = true;
 		}

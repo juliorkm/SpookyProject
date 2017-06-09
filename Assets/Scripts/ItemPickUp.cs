@@ -23,6 +23,7 @@ public class ItemPickUp : MonoBehaviour {
 	private float scale;
 
 	private Vector2 spawnLocation;
+    private float timeUntilDespawn = 7f;
 
 	// Use this for initialization
 	void Start () {
@@ -48,6 +49,23 @@ public class ItemPickUp : MonoBehaviour {
 		sr.transform.localScale = new Vector3 (scale*(1 + sizeVariation * Mathf.Sin (Time.time*variationSpeed)), scale*(1 + sizeVariation * Mathf.Sin (Time.time*variationSpeed)), 1);
 	}
 
+    IEnumerator fadeUntilDestroy() {
+        float duracao = 2f;
+        while (sr.color.a > 0) {
+            sr.color = new Color(1f, 1f, 1f, sr.color.a - .02f);
+            yield return new WaitForSeconds(duracao * .02f);
+        }
+        if (gameObject != null) Destroy(gameObject);
+    }
+
+    void despawnItem() {
+        if (timeUntilDespawn > 0) timeUntilDespawn -= Time.deltaTime;
+        else {
+            StartCoroutine(fadeUntilDestroy());
+            timeUntilDespawn = 90;
+        }
+    }
+
 	// Update is called once per frame
 	void Update () {
 		if (!cc.enabled) {
@@ -57,8 +75,10 @@ public class ItemPickUp : MonoBehaviour {
 				cc.enabled = true;
 				idleAnimation ();
 			}
-		} else
+		} else {
 			idleAnimation ();
+            despawnItem();
+        }
 	}
 
 	void OnTriggerStay2D(Collider2D coll) {

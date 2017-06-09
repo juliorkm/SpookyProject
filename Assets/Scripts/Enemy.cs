@@ -37,10 +37,15 @@ public class Enemy : MonoBehaviour {
 
     [HideInInspector]
 	public Rigidbody2D rb;
-	public SpriteRenderer sr;
-	protected Animator anim;
+    [HideInInspector]
+    public SpriteRenderer sr;
+    [HideInInspector]
+    protected Animator anim;
 
-	public void setFlip(bool direction) {
+    [HideInInspector]
+    public bool hitFrom; //false = left; true = right;
+
+    public void setFlip(bool direction) {
 		sr.flipX = direction;
 	}
 

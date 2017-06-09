@@ -94,7 +94,7 @@ public class Zumbi : Enemy {
 				anim.SetBool ("atk", false);
 				stunned = true;
                 var particle = Instantiate(hurtParticle, transform);
-                particle.transform.rotation = (sr.flipX) ? Quaternion.Euler(0f, 0f, 330f) : Quaternion.Euler(0f, 0f, 150f);
+                particle.transform.rotation = (hitFrom) ? Quaternion.Euler(0f, 0f, 330f) : Quaternion.Euler(0f, 0f, 150f);
                 rb.velocity = Vector2.zero;
 			}
 			stunDuration -= Time.deltaTime;
@@ -156,7 +156,8 @@ public class Zumbi : Enemy {
 				Enemy enemy = coll.gameObject.GetComponentInParent<Enemy> ();
 				enemy.health -= damage;
 				enemy.stunDuration = stunApplied;
-			}
+                enemy.hitFrom = (transform.position.x < enemy.transform.position.x) ? false : true;
+            }
 		}
 	}
 }
