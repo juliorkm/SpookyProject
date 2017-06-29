@@ -26,7 +26,7 @@ public class Zumbi : Enemy {
 			if (anim.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.Chasing")) {
 				if (Mathf.Abs (x) < horizontalRange && Mathf.Abs (y) < verticalRange) {
 					anim.SetBool ("chase", false);
-					rb.velocity = new Vector2 (0f, 0f);
+					rb.velocity = Vector2.zero;
 				} else {
 					if (Mathf.Abs (x) > horizontalRange) {
 						if (x > 0) {
@@ -56,13 +56,17 @@ public class Zumbi : Enemy {
 						}
 					} else
 						moveY = 0f;
+
+                    moveDirection = new Vector2(moveX * horizontalSpeed, moveY * verticalSpeed);
+                    speed = moveDirection.magnitude;
+                    moveDirection.Normalize();
 				}
 			} else {
-				rb.velocity = new Vector2 (0f, 0f);
+				rb.velocity = Vector2.zero;
 				if (Mathf.Abs (x) > horizontalRange || Mathf.Abs (y) > verticalRange)
 					anim.SetBool ("chase", true);
 			}
-			if (rb.velocity.Equals(new Vector2(0, 0))) {
+			if (rb.velocity.Equals(Vector2.zero)) {
 				if (x < 0)
 					sr.flipX = true;
 				else if (x > 0)
@@ -149,7 +153,7 @@ public class Zumbi : Enemy {
 	void OnTriggerEnter2D(Collider2D coll) {
 		if (coll.gameObject.tag.Equals(opponent + "Hurtbox")) {
 			Player player = coll.gameObject.GetComponentInParent<Player> ();
-			if (player != null) {
+			if (player != null && !player.dead) {
 				player.health -= damage;
 				player.stunnedFor = stunApplied;
 			} else {

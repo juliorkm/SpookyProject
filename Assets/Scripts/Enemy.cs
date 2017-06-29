@@ -14,7 +14,11 @@ public class Enemy : MonoBehaviour {
 	public float horizontalSpeed, verticalSpeed;
 	[HideInInspector]
 	public float moveX, moveY;
-	public float horizontalRange, verticalRange;
+    [HideInInspector]
+    public Vector2 moveDirection;
+    [HideInInspector]
+    public float speed;
+    public float horizontalRange, verticalRange;
 
 	[SerializeField]
 	private GameObject[] drops;
@@ -44,6 +48,8 @@ public class Enemy : MonoBehaviour {
 
     [HideInInspector]
     public bool hitFrom; //false = left; true = right;
+
+    public float maxDistanceRadius;
 
     public void setFlip(bool direction) {
 		sr.flipX = direction;
@@ -123,5 +129,7 @@ public class Enemy : MonoBehaviour {
 		anim = GetComponentInChildren<Animator> ();
 
 		findTarget ();
+
+        GameObject.Find("EnemyManager").GetComponent<EnemyManager>().enemies.Add(this);
 	}
 }

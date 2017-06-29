@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour {
 
 		if (player.health > player.maxHealth)
 			player.health = player.maxHealth;
-		if (player.health < 0) {
+		if (player.health <= 0) {
 			player.health = 0;
 			if (player.gameObject != null && !player.dead)
 				player.death ();
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 
-		healthBar.fillAmount = (float) player.health / (float) player.maxHealth;
+		healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, (float) player.health / (float) player.maxHealth, .3f);
 		enemiesDefeated.text = enemiesInt.ToString ();
 	}
 }

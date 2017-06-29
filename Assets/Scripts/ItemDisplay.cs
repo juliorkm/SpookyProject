@@ -27,8 +27,8 @@ public class ItemDisplay : MonoBehaviour {
 			}
 		}
 
-		invisible = new Vector4(0, 0, 0, 0);
-		visible = new Vector4 (1, 1, 1, 1);
+		invisible = new Color (1f, 1f, 1f, 0f);
+		visible = Color.white;
 	}
 	
 	// Update is called once per frame

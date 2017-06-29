@@ -4,11 +4,11 @@ using System.Collections;
 public class Aureola : MonoBehaviour {
 	[SerializeField]
 	private SpriteRenderer monster;
-	//private SpriteRenderer sr;
+	private SpriteRenderer sr;
 	private float distance, height;
 
 	void Start () {
-		//sr = GetComponent <SpriteRenderer> ();
+		sr = GetComponent <SpriteRenderer> ();
 		distance = transform.localPosition.x;
 		height = transform.localPosition.y;
 		if (monster.flipX)
@@ -21,5 +21,6 @@ public class Aureola : MonoBehaviour {
 			transform.localPosition = new Vector2(-distance, height);
 		else
 			transform.localPosition = new Vector2(distance, height);
+        sr.sortingOrder = monster.sortingOrder;
 	}
 }

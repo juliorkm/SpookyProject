@@ -6,9 +6,20 @@ public class ZumbiAnimEvents : MonoBehaviour {
 	private Zumbi zumbi;
 
 	public void addSpeed() {
-		float x = zumbi.moveX * zumbi.horizontalSpeed;
-		float y = zumbi.moveY * zumbi.verticalSpeed;
-		zumbi.rb.velocity = new Vector2 (x, y);
+        EnemyManager em = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
+        Vector2 direction = (zumbi.moveDirection + em.avoidFriends(zumbi)).normalized;
+        float x = direction.x;
+        float y = direction.y;
+        if (Mathf.Abs(direction.x * zumbi.speed) > zumbi.horizontalSpeed)
+            x = Mathf.Sign(direction.x * zumbi.speed) * zumbi.horizontalSpeed / zumbi.speed;
+        if (Mathf.Abs(direction.y * zumbi.speed) > zumbi.verticalSpeed)
+            y = Mathf.Sign(direction.y * zumbi.speed) * zumbi.verticalSpeed / zumbi.speed;
+        if ((direction.x > 0 && !zumbi.sr.flipX) || (direction.x < 0 && zumbi.sr.flipX))
+            x = 0f;
+
+
+
+        zumbi.rb.velocity = new Vector2(x,y) * zumbi.speed;
 	}
 
 	public void stopSpeed() {
