@@ -2,23 +2,28 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using TMPro;
 
 public class GameManager : MonoBehaviour {
 
-	public Text enemiesDefeated;
-	public Image healthBar;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI hiscoreText;
+    public Image healthBar;
 	public Player player;
 	public GameObject[] items;
 	public GameObject[] enemies;
 
-	public int enemiesInt = 0;
+	public int score = 0;
+    public int hiscore;
 
     private CameraBehaviors cb;
 
     //private Transform[] hitboxes;
 
     IEnumerator GameOver() {
-		//player.death ();
+        //player.death ();
+        PlayerPrefs.SetInt("hiscore", score);
+        PlayerPrefs.Save();
 		yield return new WaitForSeconds (1.5f);
 		StartCoroutine (toTitle ());
 	}
@@ -45,6 +50,7 @@ public class GameManager : MonoBehaviour {
 	void Start() {
         //hitboxes = GameObject.Find ("Player").GetComponentsInChildren<Transform> (true);
         cb = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviors>();
+        if (PlayerPrefs.HasKey("hiscore")) hiscore = PlayerPrefs.GetInt("hiscore");
     }
 
 	// Update is called once per frame
@@ -84,6 +90,8 @@ public class GameManager : MonoBehaviour {
         //orelhinha orelhao master race
         float fill = ((float)player.health / (float)player.maxHealth)*.71f + .19f;
 		healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, fill, .3f);
-		enemiesDefeated.text = enemiesInt.ToString ();
+
+        scoreText.text = score.ToString ();
+        hiscoreText.text = (hiscore > score ? hiscore : score).ToString();
 	}
 }

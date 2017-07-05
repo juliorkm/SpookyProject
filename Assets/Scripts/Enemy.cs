@@ -3,6 +3,9 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
+    [SerializeField]
+    private int pointsYielded;
+
 	public string opponent;
 
 	[HideInInspector]
@@ -103,7 +106,7 @@ public class Enemy : MonoBehaviour {
     protected void die() {
 		GameObject es = GameObject.Find ("EventSystem");
 		if (!dead && opponent.Equals("Player")) {
-			es.GetComponent<GameManager> ().enemiesInt++;
+			es.GetComponent<GameManager> ().score += pointsYielded;
 			es.GetComponent<Spawner> ().enemiesAlive--;
 		}
 		Instantiate (fumaca, gameObject.transform.position, Quaternion.identity);
