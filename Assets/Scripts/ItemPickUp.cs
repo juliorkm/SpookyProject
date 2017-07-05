@@ -98,7 +98,7 @@ public class ItemPickUp : MonoBehaviour {
 					for (int i = 0; i < Player.N_ITEMS; i++) {
 						if (player.item [i] == -1) {
 							player.item [i] = itemID;
-							GameObject.Find ("ItemIcon").GetComponent<ItemDisplay> ().ItemIcons [i] = sr.sprite;
+							GameObject.Find ("ItemManager").GetComponent<ItemDisplay> ().ItemIcons [i] = sr.sprite;
 							if (gameObject != null) Destroy (gameObject);
 							break;
 						}

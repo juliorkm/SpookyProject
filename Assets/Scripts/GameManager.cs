@@ -81,8 +81,9 @@ public class GameManager : MonoBehaviour {
 			StartCoroutine (GameOver ());
 		}
 
-
-		healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, (float) player.health / (float) player.maxHealth, .3f);
+        //orelhinha orelhao master race
+        float fill = ((float)player.health / (float)player.maxHealth)*.71f + .19f;
+		healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, fill, .3f);
 		enemiesDefeated.text = enemiesInt.ToString ();
 	}
 }

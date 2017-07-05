@@ -7,8 +7,10 @@ public class Zumbi : Enemy {
 	public int damage;
 	[SerializeField]
 	private float stunApplied;
+    [SerializeField]
+    private float knockbackDistance, knockbackDuration;
 
-	[SerializeField]
+    [SerializeField]
 	private float maxDistance;
 
 	private GameObject currentHitbox;
@@ -97,10 +99,15 @@ public class Zumbi : Enemy {
 				anim.SetBool ("chase", false);
 				anim.SetBool ("atk", false);
 				stunned = true;
+                if (health > 0 && knockedbackDuration != 0) {
+                    StopCoroutine("getKnockedback");
+                    StartCoroutine(getKnockedback(knockback, knockedbackDuration));
+                }
+                else
+                    rb.velocity = Vector2.zero;
                 var particle = Instantiate(hurtParticle, transform);
                 particle.transform.rotation = (hitFrom) ? Quaternion.Euler(0f, 0f, 330f) : Quaternion.Euler(0f, 0f, 150f);
-                rb.velocity = Vector2.zero;
-			}
+            }
 			stunDuration -= Time.deltaTime;
 		} else if(anim.GetBool("damaged") && a.IsName("Base Layer.ZumbiHitstun")) {
 			stunned = false;
@@ -130,7 +137,7 @@ public class Zumbi : Enemy {
 			if (target == null || distance > maxDistance)
 				findTarget ();
 			if (a.IsName ("Base Layer.ZumbiHurt")) {
-				rb.velocity = new Vector2 (0f, 0f);
+				//rb.velocity = new Vector2 (0f, 0f);
 			} else {
 				if (a.IsName ("Base Layer.Chasing") || a.IsName ("Base Layer.Idle"))
 					if (target != null) movement ();
@@ -153,14 +160,21 @@ public class Zumbi : Enemy {
 	void OnTriggerEnter2D(Collider2D coll) {
 		if (coll.gameObject.tag.Equals(opponent + "Hurtbox")) {
 			Player player = coll.gameObject.GetComponentInParent<Player> ();
-			if (player != null && !player.dead) {
-				player.health -= damage;
-				player.stunnedFor = stunApplied;
+			if (player != null) {
+                if (!player.dead) {
+				    player.health -= damage;
+				    player.stunnedFor = stunApplied;
+                    player.hitFrom = (transform.position.x < player.transform.position.x) ? false : true;
+                    player.knockback = knockbackDistance;
+                    player.knockedbackDuration = knockbackDuration;
+                }
 			} else {
 				Enemy enemy = coll.gameObject.GetComponentInParent<Enemy> ();
 				enemy.health -= damage;
 				enemy.stunDuration = stunApplied;
                 enemy.hitFrom = (transform.position.x < enemy.transform.position.x) ? false : true;
+                enemy.knockback = knockbackDistance;
+                enemy.knockedbackDuration = knockbackDuration;
             }
 		}
 	}

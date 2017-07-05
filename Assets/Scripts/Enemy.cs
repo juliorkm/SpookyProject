@@ -31,7 +31,9 @@ public class Enemy : MonoBehaviour {
 	public bool stunned = false;
 	[HideInInspector]
 	public float stunDuration = 0;
-	[HideInInspector]
+    [HideInInspector]
+    public float knockback, knockedbackDuration;
+    [HideInInspector]
 	public bool dead = false;
 
     [SerializeField]
@@ -83,7 +85,22 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 
-	protected void die() {
+    public IEnumerator getKnockedback(float dist, float stun)
+    {
+        if (hitFrom)
+        {
+            rb.velocity = new Vector2(-dist / stun, 0f);
+        }
+        else
+        {
+            rb.velocity = new Vector2(dist / stun, 0f);
+        }
+        yield return new WaitForSeconds(stun);
+        rb.velocity = Vector2.zero;
+        knockback = 0; knockedbackDuration = 0;
+    }
+
+    protected void die() {
 		GameObject es = GameObject.Find ("EventSystem");
 		if (!dead && opponent.Equals("Player")) {
 			es.GetComponent<GameManager> ().enemiesInt++;

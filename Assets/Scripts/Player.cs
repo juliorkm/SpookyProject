@@ -10,7 +10,7 @@ public class Player : MonoBehaviour {
 	public bool paused = false;
 
 	public int maxHealth;
-	[HideInInspector]
+	//[HideInInspector]
 	public int health;
 	public float horizontalSpeed, verticalSpeed;
 	public float[] cooldowns;
@@ -47,7 +47,11 @@ public class Player : MonoBehaviour {
 	public bool stunned = false;
 	[HideInInspector]
 	public float stunnedFor = 0;
-	[HideInInspector]
+    [HideInInspector]
+    public float knockback, knockedbackDuration;
+    [HideInInspector]
+    public bool hitFrom; //false = left; true = right;
+    [HideInInspector]
 	public bool dead = false;
 
 	private GameObject currentHitbox;
@@ -57,6 +61,7 @@ public class Player : MonoBehaviour {
 	private SpriteRenderer sr;
 	private Animator anim;
     private CameraBehaviors cb;
+    private ItemDisplay iD;
 
 
 	public void death() {
@@ -80,27 +85,31 @@ public class Player : MonoBehaviour {
 		}
 		*/
 		if (!paused) {
-			if (anim.GetCurrentAnimatorStateInfo(0).IsName("BaseLayer.PlayerIdle")) {
-				if (Input.GetAxisRaw ("Horizontal") > 0 && direction == false) {
-					sr.flipX = true;
-					direction = true;
-				}
-				if (Input.GetAxisRaw ("Horizontal") < 0 && direction == true) {
-					sr.flipX = false;
-					direction = false;
-				}
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("BaseLayer.PlayerIdle"))
+            {
+                if (Input.GetAxisRaw("Horizontal") > 0 && direction == false)
+                {
+                    sr.flipX = true;
+                    direction = true;
+                }
+                if (Input.GetAxisRaw("Horizontal") < 0 && direction == true)
+                {
+                    sr.flipX = false;
+                    direction = false;
+                }
 
-				float horizontal = Input.GetAxisRaw ("Horizontal");
-				float vertical = Input.GetAxisRaw ("Vertical");
-				rb.velocity = new Vector3 (horizontal * horizontalSpeed, vertical * verticalSpeed, 0f);
+                float horizontal = Input.GetAxisRaw("Horizontal");
+                float vertical = Input.GetAxisRaw("Vertical");
+                if (!stunned)
+                rb.velocity = new Vector3(horizontal * horizontalSpeed, vertical * verticalSpeed, 0f);
 
-				if (horizontal == 0 && vertical == 0)
-					anim.SetFloat ("Moving", 0);
-				else
-					anim.SetFloat ("Moving", 1);
-			}
-			else 
-				rb.velocity = new Vector3 (0f, 0f, 0f);
+                if (horizontal == 0 && vertical == 0)
+                    anim.SetFloat("Moving", 0);
+                else
+                    anim.SetFloat("Moving", 1);
+            }
+            else
+				rb.velocity = Vector2.zero;
 		}
 	}
 
@@ -129,7 +138,6 @@ public class Player : MonoBehaviour {
 			//FILA/PILHA
 			///*
 			if (Input.GetKeyDown (KeyCode.X) || Input.GetKeyDown (KeyCode.JoystickButton3)) {
-				ItemDisplay iD = GameObject.Find ("ItemIcon").GetComponent<ItemDisplay> ();
 				itemeff.useItem (0);
 				for (int i = 0; i < N_ITEMS - 1; i++) {
 					item [i] = item [i + 1];
@@ -148,7 +156,7 @@ public class Player : MonoBehaviour {
 
 			if (attackCounter < 3 && (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.JoystickButton2))) {
 				if (canAttack) {
-					rb.velocity = new Vector3 (0f, 0f, 0f);
+					rb.velocity = Vector2.zero;
 					Transform[] hitboxes = GetComponentsInChildren<Transform>(true);
 					if ((Input.GetAxisRaw ("Horizontal") != -1 && direction) || (Input.GetAxisRaw ("Horizontal") != 1 && !direction)) {
 						if (anim.GetBool ("Attack3")) {
@@ -182,7 +190,7 @@ public class Player : MonoBehaviour {
 						anim.SetBool ("Attack1", true);
 						attackCounter = 1;
 
-						rb.velocity = new Vector3 (0f, 0f, 0f);
+						rb.velocity = Vector2.zero;
 						//canMove = false;
 						attack1CD = 0;
 					}
@@ -202,14 +210,31 @@ public class Player : MonoBehaviour {
 				anim.SetBool ("toAttack3", false);
 				stunned = true;
                 //cb.pulseCamera(.7f,.2f);
-				rb.velocity = Vector2.zero;
-			}
+                if (health > 0 && knockedbackDuration != 0) {
+                    StopCoroutine("getKnockedback");
+                    StartCoroutine(getKnockedback(knockback, knockedbackDuration));
+                }
+                else
+                    rb.velocity = Vector2.zero;
+            }
 			stunnedFor -= Time.deltaTime;
 		} else if(anim.GetBool("Damaged") && a.IsName("BaseLayer.Hurt")) {
 			stunned = false;
 			anim.SetBool ("Damaged", false);
 		}
 	}
+
+    private IEnumerator getKnockedback(float dist, float stun) {
+        if (hitFrom) {
+            rb.velocity = new Vector2(-dist / stun, 0f);
+        }
+        else {
+            rb.velocity = new Vector2(dist / stun, 0f);
+        }
+        yield return new WaitForSeconds(stun);
+        rb.velocity = Vector2.zero;
+        knockback = 0; knockedbackDuration = 0;
+    }
 
 	public void enableMovement() {
 		//canMove = true;
@@ -253,8 +278,9 @@ public class Player : MonoBehaviour {
 		sr = GetComponentInChildren<SpriteRenderer> ();
 		anim = GetComponentInChildren<Animator> ();
         cb = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviors>();
+        iD = GameObject.Find("ItemManager").GetComponent<ItemDisplay>();
 
-		item = new int[N_ITEMS];
+        item = new int[N_ITEMS];
 		for (int i = 0; i < N_ITEMS; i++) item[i] = -1;
 
 		itemeff = GetComponent<ItemEffects> ();
@@ -275,9 +301,7 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		AnimatorStateInfo a = anim.GetCurrentAnimatorStateInfo (0);
-		if (a.IsName ("BaseLayer.Hurt")) {
-			rb.velocity = new Vector2 (0f, 0f);
-		} else {
+		if (!a.IsName ("BaseLayer.Hurt")) {
 			playerMovement ();
 			quickAttack ();
 			canAttack = true;

@@ -24,6 +24,7 @@ public class ZumbiAnimEvents : MonoBehaviour {
 
 	public void stopSpeed() {
 		zumbi.rb.velocity = new Vector2 (0f, 0f);
+        if (zumbi.knockedbackDuration > 0) StartCoroutine(zumbi.getKnockedback(zumbi.knockback, zumbi.knockedbackDuration));
 	}
 		
 	public void stopAttacking() {
