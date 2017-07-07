@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: aadfd037bea023c4380968d6ce8a0c0f
+timeCreated: 1499311715
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Wicked Scary Movie
+  fontNames:
+  - Wicked Scary Movie
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

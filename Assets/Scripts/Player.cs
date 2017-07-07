@@ -7,7 +7,7 @@ public class Player : MonoBehaviour {
 	public static int N_ITEMS = 3;
 
 	[HideInInspector]
-	public bool paused = false;
+	public bool paused = true;
 
 	public int maxHealth;
 	//[HideInInspector]
@@ -278,7 +278,7 @@ public class Player : MonoBehaviour {
 		sr = GetComponentInChildren<SpriteRenderer> ();
 		anim = GetComponentInChildren<Animator> ();
         cb = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviors>();
-        iD = GameObject.Find("ItemManager").GetComponent<ItemDisplay>();
+        iD = GameObject.Find("HUD").GetComponentInChildren<ItemDisplay>(true);
 
         item = new int[N_ITEMS];
 		for (int i = 0; i < N_ITEMS; i++) item[i] = -1;
@@ -296,6 +296,7 @@ public class Player : MonoBehaviour {
 			}
 		}
 
+        paused = true;
 	}
 	
 	// Update is called once per frame

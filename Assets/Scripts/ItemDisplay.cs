@@ -12,8 +12,8 @@ public class ItemDisplay : MonoBehaviour {
 	public Sprite[] ItemIcons;
 	//public Sprite itemIcon;
 
-	void Start () {
-		player = GameObject.Find ("Player").GetComponent<Player>();
+	void Awake () {
+		player = GameObject.FindObjectOfType<Player> ();
 
 		ItemIcons = new Sprite[Player.N_ITEMS];
 

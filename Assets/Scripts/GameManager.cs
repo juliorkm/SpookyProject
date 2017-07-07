@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	IEnumerator toTitle() {
-		float fadeTime = GetComponent<FadeInOut>().BeginFade(1);
+		float fadeTime = FindObjectOfType<FadeInOut>().BeginFade(1);
 		yield return new WaitForSeconds(fadeTime);
 		SceneManager.LoadScene(0);
 	}
@@ -47,8 +47,10 @@ public class GameManager : MonoBehaviour {
 			Instantiate (enemies[0], new Vector3 (-8, Random.Range(-5f, 0f)), Quaternion.identity);
 	}
 
-	void Start() {
+	void Awake() {
         //hitboxes = GameObject.Find ("Player").GetComponentsInChildren<Transform> (true);
+        player = GameObject.FindObjectOfType<Player>();
+
         cb = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviors>();
         if (PlayerPrefs.HasKey("hiscore")) hiscore = PlayerPrefs.GetInt("hiscore");
     }
@@ -82,9 +84,12 @@ public class GameManager : MonoBehaviour {
 			player.health = player.maxHealth;
 		if (player.health <= 0) {
 			player.health = 0;
-			if (player.gameObject != null && !player.dead)
-				player.death ();
-			StartCoroutine (GameOver ());
+            try {
+			    if (player.gameObject != null && !player.dead)
+				    player.death ();
+			    StartCoroutine (GameOver ());
+            }
+            catch (System.Exception e) { }
 		}
 
         //orelhinha orelhao master race

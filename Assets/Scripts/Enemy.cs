@@ -104,7 +104,7 @@ public class Enemy : MonoBehaviour {
     }
 
     protected void die() {
-		GameObject es = GameObject.Find ("EventSystem");
+		GameObject es = GameObject.Find ("GameManager");
 		if (!dead && opponent.Equals("Player")) {
 			es.GetComponent<GameManager> ().score += pointsYielded;
 			es.GetComponent<Spawner> ().enemiesAlive--;
