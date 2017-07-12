@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class ImagePulse : MonoBehaviour {
 
@@ -10,39 +11,31 @@ public class ImagePulse : MonoBehaviour {
     private float maxOpacity;
 
     private Image im;
-    //private bool b = true;
+    private TextMeshProUGUI tx;
     private float f;
+    private Color initColor;
+
+    private bool isText = false;
 
 	void Start () {
         im = GetComponent<Image>();
+        if (im == null) {
+            isText = true;
+            tx = GetComponent<TextMeshProUGUI>();
+        }
         f = 0;
-        im.color = new Color(1f, 1f, 1f, f);
+        initColor = (isText) ? tx.color : im.color;
+        if (isText)
+            tx.color = new Color(initColor.r, initColor.g, initColor.b, f);
+        else
+            im.color = new Color(initColor.r, initColor.g, initColor.b, f);
     }
 	
 	void Update () {
-        /*
-        if (b) {
-            if (maxOpacity - im.color.a > .01)
-                if (f < (maxOpacity + minOpacity) / 2)
-                    f += rate*10 * Time.timeScale * (im.color.a - minOpacity);
-                else
-                    f += rate * 10 * Time.timeScale * (maxOpacity - im.color.a);
-                //f = Mathf.Lerp(f, maxOpacity, rate*10);
-            else
-                b = false;
-        }
-        else {
-            if (im.color.a - minOpacity > .01)
-                if (f > (maxOpacity + minOpacity)/2)
-                    f -= rate * 10 * Time.timeScale * (maxOpacity - im.color.a);
-                else
-                    f -= rate * 10 * Time.timeScale * (im.color.a - minOpacity);
-                //f = Mathf.Lerp(f, minOpacity, rate*10);
-            else
-                b = true;
-        }
-        */
         f = (Mathf.Sin(Time.time * 5) + 1) / 2 * (maxOpacity-minOpacity) + minOpacity;
-        im.color = new Color(1f, 1f, 1f, f);
+        if (isText)
+            tx.color = new Color(initColor.r, initColor.g, initColor.b, f);
+        else
+            im.color = new Color(initColor.r, initColor.g, initColor.b, f);
     }
 }

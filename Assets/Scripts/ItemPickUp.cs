@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class ItemPickUp : MonoBehaviour {
-	public int itemID;
+    [SerializeField]
+    private ItemType itemID;
 	private int itemSprite;
 
 	[SerializeField]
@@ -24,9 +25,14 @@ public class ItemPickUp : MonoBehaviour {
 
 	private Vector2 spawnLocation;
     private float timeUntilDespawn = 7f;
+    
+    enum ItemType
+    {
+        PIRULITO, COOKIE, BOMBOM, BARRA_DE_CHOCOLATE, ABOBORA, ZUMBI, ZUMBI3
+    }
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		cc = GetComponentInChildren<CircleCollider2D> ();
 		cc.enabled = false;
 		spawnLocation = transform.position;
@@ -86,7 +92,7 @@ public class ItemPickUp : MonoBehaviour {
 			Player player = coll.gameObject.GetComponentInParent<Player> ();
 			if (player != null) {
 
-				if (itemID <= 3) {
+				if ((int) itemID <= 3) {
 					if (player.health < player.maxHealth) {
 						player.health += healAmount;
 						if (gameObject != null) Destroy (gameObject);
@@ -97,7 +103,7 @@ public class ItemPickUp : MonoBehaviour {
 					///*
 					for (int i = 0; i < Player.N_ITEMS; i++) {
 						if (player.item [i] == -1) {
-							player.item [i] = itemID;
+							player.item [i] = (int) itemID;
 							GameObject.Find ("ItemManager").GetComponent<ItemDisplay> ().ItemIcons [i] = sr.sprite;
 							if (gameObject != null) Destroy (gameObject);
 							break;

@@ -56,6 +56,8 @@ public class Enemy : MonoBehaviour {
 
     public float maxDistanceRadius;
 
+    private InstaKill ik;
+
     public void setFlip(bool direction) {
 		sr.flipX = direction;
 	}
@@ -108,6 +110,7 @@ public class Enemy : MonoBehaviour {
 		if (!dead && opponent.Equals("Player")) {
 			es.GetComponent<GameManager> ().score += pointsYielded;
 			es.GetComponent<Spawner> ().enemiesAlive--;
+            ik.timer = 0;
 		}
 		Instantiate (fumaca, gameObject.transform.position, Quaternion.identity);
 		spawnDrop ();
@@ -147,6 +150,7 @@ public class Enemy : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
 		sr = GetComponentInChildren<SpriteRenderer> ();
 		anim = GetComponentInChildren<Animator> ();
+        ik = FindObjectOfType<InstaKill>();
 
 		findTarget ();
 

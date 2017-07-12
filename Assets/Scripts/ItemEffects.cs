@@ -11,7 +11,6 @@ public class ItemEffects : MonoBehaviour {
 	public GameObject Zumbi;
 	private Player player;
 
-
 	public void useItem(int pos) {
 		if (player.item [pos] == -1) {
 			//nao tem item
@@ -37,11 +36,33 @@ public class ItemEffects : MonoBehaviour {
 				d = 1;
 			else
 				d = -1;
-			Vector3 v = new Vector3 (player.transform.position.x + d, player.transform.position.y/*coisa do sprite da arale - .8f /*****/, 1);
+			Vector3 v = new Vector2 (player.transform.position.x + d, player.transform.position.y);
 			Instantiate (Fumacas[0], v, Quaternion.identity);
 			GameObject zumb = (GameObject) Instantiate(Zumbi, v, Quaternion.identity);
 			zumb.GetComponent<Zumbi> ().setFlip (player.direction);
-		}
+		} else if (player.item [pos] == 6) {
+			//zumbi3
+			int d;
+			if (player.direction)
+				d = 1;
+			else
+				d = -1;
+			Vector3 v = new Vector2 (player.transform.position.x + d, player.transform.position.y);
+			Instantiate (Fumacas[0], v, Quaternion.identity);
+			GameObject zumb = (GameObject) Instantiate(Zumbi, v, Quaternion.identity);
+			zumb.GetComponent<Zumbi> ().setFlip (player.direction);
+
+            v = new Vector2(player.transform.position.x + d, player.transform.position.y - .7f);
+            Instantiate(Fumacas[0], v, Quaternion.identity);
+            zumb = (GameObject)Instantiate(Zumbi, v, Quaternion.identity);
+            zumb.GetComponent<Zumbi>().setFlip(player.direction);
+
+            v = new Vector2(player.transform.position.x + d, player.transform.position.y + .7f);
+            Instantiate(Fumacas[0], v, Quaternion.identity);
+            zumb = (GameObject)Instantiate(Zumbi, v, Quaternion.identity);
+            zumb.GetComponent<Zumbi>().setFlip(player.direction);
+
+        }
 		player.item[pos] = -1;
 	}
 

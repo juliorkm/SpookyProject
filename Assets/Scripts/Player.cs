@@ -56,7 +56,10 @@ public class Player : MonoBehaviour {
 
 	private GameObject currentHitbox;
 
-	[HideInInspector]
+    private string attackButton, itemButton;
+    private string attackButtonJ, itemButtonJ;
+
+    [HideInInspector]
 	public Rigidbody2D rb;
 	private SpriteRenderer sr;
 	private Animator anim;
@@ -137,7 +140,7 @@ public class Player : MonoBehaviour {
 
 			//FILA/PILHA
 			///*
-			if (Input.GetKeyDown (KeyCode.X) || Input.GetKeyDown (KeyCode.JoystickButton3)) {
+			if (Input.GetKeyDown (itemButton) || Input.GetKeyDown (itemButtonJ)) {
 				itemeff.useItem (0);
 				for (int i = 0; i < N_ITEMS - 1; i++) {
 					item [i] = item [i + 1];
@@ -154,7 +157,7 @@ public class Player : MonoBehaviour {
 			if (attack1CD < cooldowns [0])
 				attack1CD += Time.deltaTime;
 
-			if (attackCounter < 3 && (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.JoystickButton2))) {
+			if (attackCounter < 3 && (Input.GetKeyDown (attackButton) || Input.GetKeyDown (attackButtonJ))) {
 				if (canAttack) {
 					rb.velocity = Vector2.zero;
 					Transform[] hitboxes = GetComponentsInChildren<Transform>(true);
@@ -279,6 +282,18 @@ public class Player : MonoBehaviour {
 		anim = GetComponentInChildren<Animator> ();
         cb = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviors>();
         iD = GameObject.Find("HUD").GetComponentInChildren<ItemDisplay>(true);
+
+        if (!PlayerPrefs.HasKey("atk")) PlayerPrefs.SetString("atk", "z");
+        attackButton = PlayerPrefs.GetString("atk");
+
+        if (!PlayerPrefs.HasKey("item")) PlayerPrefs.SetString("item", "x");
+        itemButton = PlayerPrefs.GetString("item");
+
+        if (!PlayerPrefs.HasKey("atkJ")) PlayerPrefs.SetString("atkJ", "joystick button 2");
+        attackButtonJ = PlayerPrefs.GetString("atkJ");
+
+        if (!PlayerPrefs.HasKey("itemJ")) PlayerPrefs.SetString("itemJ", "joystick button 3");
+        itemButtonJ = PlayerPrefs.GetString("itemJ");
 
         item = new int[N_ITEMS];
 		for (int i = 0; i < N_ITEMS; i++) item[i] = -1;

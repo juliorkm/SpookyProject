@@ -8,7 +8,9 @@ public class Zumbi : Enemy {
 	[SerializeField]
 	private float stunApplied;
     [SerializeField]
-    private float knockbackDistance, knockbackDuration;
+    private float knockbackDistance;
+    [SerializeField]
+    private float knockbackDuration;
 
     [SerializeField]
 	private float maxDistance;

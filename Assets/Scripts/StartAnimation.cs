@@ -12,8 +12,6 @@ public class StartAnimation : MonoBehaviour {
 
     [SerializeField]
     GameObject[] GameManagers;
-    [SerializeField]
-    GameObject[] HUD;
 
     [SerializeField]
     Image Lightning;
@@ -38,10 +36,11 @@ public class StartAnimation : MonoBehaviour {
         LifeHUD.transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
 
         foreach (GameObject g in GameManagers) g.SetActive(false);
-        foreach (GameObject h in HUD) h.SetActive(false);
+        ScoreSign.SetActive(false);
+        LifeHUD.SetActive(false);
 
         //StartCoroutine(StartingAnimation());
-	}
+    }
 	
 	public IEnumerator StartingAnimation () {
         yield return new WaitForSeconds(1f);
@@ -79,7 +78,10 @@ public class StartAnimation : MonoBehaviour {
         }
         Instantiate(Rain);
 
-        foreach (GameObject h in HUD) h.SetActive(true);
+        //Destroy(Lightning.gameObject);
+
+        ScoreSign.SetActive(true);
+        LifeHUD.SetActive(true);
         yield return new WaitForSeconds(.4f);
         foreach (GameObject g in GameManagers) g.SetActive(true);
         while (LifeHUD.transform.localEulerAngles.z - LifeRotation.eulerAngles.z > 10f) {

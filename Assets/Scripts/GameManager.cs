@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
 	public int score = 0;
     public int hiscore;
 
-    private CameraBehaviors cb;
+    //private CameraBehaviors cb;
 
     //private Transform[] hitboxes;
 
@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour {
         //hitboxes = GameObject.Find ("Player").GetComponentsInChildren<Transform> (true);
         player = GameObject.FindObjectOfType<Player>();
 
-        cb = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviors>();
+        //cb = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviors>();
         if (PlayerPrefs.HasKey("hiscore")) hiscore = PlayerPrefs.GetInt("hiscore");
     }
 
@@ -59,9 +59,9 @@ public class GameManager : MonoBehaviour {
 	void Update () {
 	
 		
-		if (Input.GetKeyDown (KeyCode.Alpha1) || Input.GetKeyDown (KeyCode.JoystickButton4))
-            cb.pulseCamera(.7f, .2f);
-		if (Input.GetKeyDown (KeyCode.Alpha2) || Input.GetKeyDown (KeyCode.JoystickButton5))
+		//if (Input.GetKeyDown (KeyCode.Alpha1) || Input.GetKeyDown (KeyCode.JoystickButton4))
+        //    cb.pulseCamera(.7f, .2f);
+		if (Input.GetKeyDown (KeyCode.Space))
 			//player.health += 15;
 			spawnItens();
         /*
