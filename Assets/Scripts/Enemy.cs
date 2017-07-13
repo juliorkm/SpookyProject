@@ -111,7 +111,8 @@ public class Enemy : MonoBehaviour {
 			es.GetComponent<GameManager> ().score += pointsYielded;
 			es.GetComponent<Spawner> ().enemiesAlive--;
             ik.timer = 0;
-		}
+            ik.pa.anim.SetBool("Fear", false);
+        }
 		Instantiate (fumaca, gameObject.transform.position, Quaternion.identity);
 		spawnDrop ();
 		anim.SetBool ("damaged", false);

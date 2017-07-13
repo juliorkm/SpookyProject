@@ -19,7 +19,8 @@ public class FadeInOut : MonoBehaviour {
         GUI.depth = drawDepth;
         GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeTexture);
 
-        
+        AudioListener.volume = 1 - alpha;
+
     }
 
     public float BeginFade(int direction)

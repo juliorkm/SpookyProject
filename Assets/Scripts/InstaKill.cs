@@ -16,10 +16,13 @@ public class InstaKill : MonoBehaviour {
     public Image black;
     private Player player;
 
+    [HideInInspector]
+    public PortraitAnim pa;
     private bool iKilledHer = false;
 
 	// Use this for initialization
 	void Awake () {
+        pa = FindObjectOfType<PortraitAnim>();
         player = FindObjectOfType<Player>();
         black.color = new Color(0f, 0f, 0f, 0f);
 	}
@@ -29,6 +32,7 @@ public class InstaKill : MonoBehaviour {
         timer += Time.deltaTime;
         if (!iKilledHer)
             if (timer >= secondsUntilStart) {
+                pa.anim.SetBool("Fear", true);
                 black.color = Color.Lerp(black.color, new Color(0f, 0f, 0f, (timer - secondsUntilStart) / darknessDuration), .2f);
                 if (timer >= secondsUntilStart + darknessDuration) {
                     iKilledHer = true;

@@ -65,6 +65,8 @@ public class Player : MonoBehaviour {
 	private Animator anim;
     private CameraBehaviors cb;
     private ItemDisplay iD;
+    [HideInInspector]
+    public PortraitAnim pa;
 
 
 	public void death() {
@@ -90,6 +92,7 @@ public class Player : MonoBehaviour {
 		if (!paused) {
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("BaseLayer.PlayerIdle"))
             {
+                pa.anim.SetBool("Attack", false);
                 if (Input.GetAxisRaw("Horizontal") > 0 && direction == false)
                 {
                     sr.flipX = true;
@@ -161,7 +164,7 @@ public class Player : MonoBehaviour {
 				if (canAttack) {
 					rb.velocity = Vector2.zero;
 					Transform[] hitboxes = GetComponentsInChildren<Transform>(true);
-					if ((Input.GetAxisRaw ("Horizontal") != -1 && direction) || (Input.GetAxisRaw ("Horizontal") != 1 && !direction)) {
+					if (hitAnEnemy && ((Input.GetAxisRaw ("Horizontal") != -1 && direction) || (Input.GetAxisRaw ("Horizontal") != 1 && !direction))) {
 						if (anim.GetBool ("Attack3")) {
 							//---
 						} else if (anim.GetBool ("Attack2")) {
@@ -172,7 +175,8 @@ public class Player : MonoBehaviour {
 								}
 							}
 							anim.SetBool ("Attack3", true);
-						} else if (anim.GetBool ("Attack1")) {
+                            pa.anim.SetBool("Attack", true);
+                        } else if (anim.GetBool ("Attack1")) {
 							foreach (Transform hitbox in hitboxes) {
 								if ((direction && hitbox.gameObject.name.Equals ("RightCollider1")) ||
 								    !direction && hitbox.gameObject.name.Equals ("LeftCollider1")) {
@@ -180,7 +184,8 @@ public class Player : MonoBehaviour {
 								}
 							}
 							anim.SetBool ("Attack2", true);
-						}
+                            pa.anim.SetBool("Attack", true);
+                        }
 					}
 
 					if (attack1CD >= cooldowns[0]) {
@@ -191,7 +196,8 @@ public class Player : MonoBehaviour {
 							}
 						}
 						anim.SetBool ("Attack1", true);
-						attackCounter = 1;
+                        pa.anim.SetBool("Attack", true);
+                        attackCounter = 1;
 
 						rb.velocity = Vector2.zero;
 						//canMove = false;
@@ -211,7 +217,11 @@ public class Player : MonoBehaviour {
 				anim.SetBool ("Attack3", false);
 				anim.SetBool ("toAttack2", false);
 				anim.SetBool ("toAttack3", false);
-				stunned = true;
+
+                pa.anim.SetBool("Hurt", true);
+                pa.anim.SetBool("Attack", false);
+
+                stunned = true;
                 //cb.pulseCamera(.7f,.2f);
                 if (health > 0 && knockedbackDuration != 0) {
                     StopCoroutine("getKnockedback");
@@ -224,7 +234,8 @@ public class Player : MonoBehaviour {
 		} else if(anim.GetBool("Damaged") && a.IsName("BaseLayer.Hurt")) {
 			stunned = false;
 			anim.SetBool ("Damaged", false);
-		}
+            pa.anim.SetBool("Hurt", false);
+        }
 	}
 
     private IEnumerator getKnockedback(float dist, float stun) {
@@ -253,8 +264,8 @@ public class Player : MonoBehaviour {
 		} else {
 			anim.SetBool ("Attack" + attack, false);
 			if (attack < 3) anim.SetBool ("toAttack" + (attack + 1), true);
-		}
-		canAttack = false;
+        }
+        canAttack = false;
 		hitAnEnemy = false;
 	}
 

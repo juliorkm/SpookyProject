@@ -36,7 +36,8 @@ public class ZumbiAnimEvents : MonoBehaviour {
 	}
 
 	public void removeHitbox() {
-		zumbi.removeHitbox();
+        try { zumbi.removeHitbox(); }
+        catch (System.Exception e) { }
 	}
 
 	// Use this for initialization

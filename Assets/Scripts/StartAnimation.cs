@@ -82,6 +82,7 @@ public class StartAnimation : MonoBehaviour {
 
         ScoreSign.SetActive(true);
         LifeHUD.SetActive(true);
+        p.GetComponent<Player>().pa = FindObjectOfType<PortraitAnim>();
         yield return new WaitForSeconds(.4f);
         foreach (GameObject g in GameManagers) g.SetActive(true);
         while (LifeHUD.transform.localEulerAngles.z - LifeRotation.eulerAngles.z > 10f) {
