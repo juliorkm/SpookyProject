@@ -17,6 +17,10 @@ public class PlayerAnimEvents : MonoBehaviour {
 		else if (position =
 	}*/
 
+    public void playSound(int i) {
+        player.playSound(i);
+    }
+
 	public void stopAttacking(int attack) {
 		player.stopAttacking (attack);
 	}

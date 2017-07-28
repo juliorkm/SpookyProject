@@ -29,7 +29,8 @@ public class ItemEffects : MonoBehaviour {
 		} else if (player.item [pos] == 4) {
 			//abobora
 			player.health += AboboraHeal;
-		} else if (player.item [pos] == 5) {
+            var v = Instantiate(Fumacas[1], player.transform.position, Quaternion.identity);
+        } else if (player.item [pos] == 5) {
 			//zumbi
 			int d;
 			if (player.direction)

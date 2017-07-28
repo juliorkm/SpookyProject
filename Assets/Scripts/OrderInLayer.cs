@@ -3,14 +3,15 @@ using System.Collections;
 
 public class OrderInLayer : MonoBehaviour {
 
+    [SerializeField]
+    private float difference = 0;
 	private SpriteRenderer sr;
 	private bool useHeight;
 
 	void Start () {
 		sr = GetComponent<SpriteRenderer> ();
-		Player p = GetComponentInParent<Player> ();
 		ItemPickUp i = GetComponentInParent<ItemPickUp> ();
-		if (p == null && i == null)
+		if (i == null)
 			useHeight = false;
 		else
 			useHeight = true;
@@ -22,6 +23,6 @@ public class OrderInLayer : MonoBehaviour {
 			//Debug.Log (sr.sprite.bounds.min.y * transform.localScale.y + gameObject.name);
 		}
 		else
-			sr.sortingOrder = - (int) ((transform.position.y) * 100);
+			sr.sortingOrder = - (int) ((transform.position.y + difference) * 100);
 	}
 }

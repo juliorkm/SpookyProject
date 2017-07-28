@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator GameOver() {
         //player.death ();
-        PlayerPrefs.SetInt("hiscore", score);
+        if (score > hiscore) PlayerPrefs.SetInt("hiscore", score);
         PlayerPrefs.Save();
 		yield return new WaitForSeconds (1.5f);
 		StartCoroutine (toTitle ());
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour {
 		}
 		*/
 
-		if (Input.GetKeyDown (KeyCode.Escape) || Input.GetKeyDown (KeyCode.JoystickButton6))
+		if (Input.GetKeyDown (KeyCode.Escape))
 			StartCoroutine (toTitle ());
 
 

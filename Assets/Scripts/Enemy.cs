@@ -44,6 +44,10 @@ public class Enemy : MonoBehaviour {
     [SerializeField]
     protected GameObject hurtParticle;
 
+    [SerializeField]
+    protected AudioClip[] sounds;
+    protected AudioSource aS;
+
     [HideInInspector]
 	public Rigidbody2D rb;
     [HideInInspector]
@@ -55,6 +59,9 @@ public class Enemy : MonoBehaviour {
     public bool hitFrom; //false = left; true = right;
 
     public float maxDistanceRadius;
+
+    [SerializeField]
+    protected float maxDistance;
 
     private InstaKill ik;
 
@@ -152,6 +159,7 @@ public class Enemy : MonoBehaviour {
 		sr = GetComponentInChildren<SpriteRenderer> ();
 		anim = GetComponentInChildren<Animator> ();
         ik = FindObjectOfType<InstaKill>();
+        aS = GetComponent<AudioSource>();
 
 		findTarget ();
 

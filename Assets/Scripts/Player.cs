@@ -22,6 +22,14 @@ public class Player : MonoBehaviour {
 	[SerializeField]
 	private GameObject playerFumaca;
 
+    [SerializeField]
+    private AudioClip hitSound;
+    [SerializeField]
+    private AudioClip[] attackSounds;
+    [SerializeField]
+    private AudioClip[] hurtSounds;
+    private AudioSource aS;
+
 	private float attack1CD;
 
 	//public AnimationClip attackAnim;
@@ -33,7 +41,7 @@ public class Player : MonoBehaviour {
 	[HideInInspector]
 	public float currentStun;
 
-	//[HideInInspector]
+	[HideInInspector]
 	public bool direction = false;
 	//true = DIREITA; false = ESQUERDA
 	//private bool canMove = true;
@@ -67,7 +75,14 @@ public class Player : MonoBehaviour {
     private ItemDisplay iD;
     [HideInInspector]
     public PortraitAnim pa;
+    
 
+    public void playSound(int i) {
+        if (i >= 0)
+            aS.PlayOneShot(attackSounds[i]);
+        else
+            aS.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Length)]);
+    }
 
 	public void death() {
 		dead = true;
@@ -293,6 +308,7 @@ public class Player : MonoBehaviour {
 		anim = GetComponentInChildren<Animator> ();
         cb = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviors>();
         iD = GameObject.Find("HUD").GetComponentInChildren<ItemDisplay>(true);
+        aS = GetComponent<AudioSource>();
 
         if (!PlayerPrefs.HasKey("atk")) PlayerPrefs.SetString("atk", "z");
         attackButton = PlayerPrefs.GetString("atk");
@@ -352,6 +368,7 @@ public class Player : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D coll) {
 		if (coll.gameObject.tag.Equals("EnemyHurtbox")) {
+            aS.PlayOneShot(hitSound);
 			Enemy enemy = coll.GetComponentInParent<Enemy> ();
 			hitAnEnemy = true;
 			enemy.stunDuration = currentStun;

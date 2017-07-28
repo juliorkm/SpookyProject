@@ -32,6 +32,10 @@ public class TitleScreen : MonoBehaviour {
     [SerializeField]
     private Sprite[] handleOptions;
 
+    [SerializeField]
+    private AudioClip[] sounds;
+    private AudioSource aS;
+
     private string attackString, itemString;
     private string attackStringJ, itemStringJ;
 
@@ -113,7 +117,7 @@ public class TitleScreen : MonoBehaviour {
     }
 
     public void clickButton() {
-		//PlayAudio(1);
+        aS.PlayOneShot(sounds[1]);
 		if (position == 0) {
             mainMenu = false;
             StartCoroutine(ToOptions());
@@ -207,7 +211,8 @@ public class TitleScreen : MonoBehaviour {
 	
     void keyBindings() {
         for (char i = 'a'; i <= 'z'; i++) {
-            if (Input.GetKeyDown("" + i))
+            if (Input.GetKeyDown("" + i)) {
+                aS.PlayOneShot(sounds[0]);
                 if (optionsPosition == 0) {
                     if (itemString.Equals("" + i))
                         itemString = attackString;
@@ -218,11 +223,13 @@ public class TitleScreen : MonoBehaviour {
                         attackString = itemString;
                     itemString = "" + i;
                 }
+            }
         }
 
         for (char i = ','; i <= '9'; i++) {
             if (i != '/')
-            if (Input.GetKeyDown("" + i))
+            if (Input.GetKeyDown("" + i)) {
+                aS.PlayOneShot(sounds[0]);
                 if (optionsPosition == 0) {
                     if (itemString.Equals("" + i))
                         itemString = attackString;
@@ -233,9 +240,11 @@ public class TitleScreen : MonoBehaviour {
                         attackString = itemString;
                     itemString = "" + i;
                 }
+            }
         }
 
-        if (Input.GetKeyDown("="))
+        if (Input.GetKeyDown("=")) {
+            aS.PlayOneShot(sounds[0]);
             if (optionsPosition == 0)
             {
                 if (itemString.Equals("="))
@@ -248,8 +257,10 @@ public class TitleScreen : MonoBehaviour {
                     attackString = itemString;
                 itemString = "=";
             }
+        }
 
-        if (Input.GetKeyDown("left ctrl"))
+        if (Input.GetKeyDown("left ctrl")) {
+            aS.PlayOneShot(sounds[0]);
             if (optionsPosition == 0) {
                 if (itemString.Equals("left ctrl"))
                     itemString = attackString;
@@ -260,8 +271,10 @@ public class TitleScreen : MonoBehaviour {
                     attackString = itemString;
                 itemString = "left ctrl";
             }
+        }
 
-        if (Input.GetKeyDown("left shift"))
+        if (Input.GetKeyDown("left shift")) {
+            aS.PlayOneShot(sounds[0]);
             if (optionsPosition == 0)
             {
                 if (itemString.Equals("left shift"))
@@ -274,8 +287,10 @@ public class TitleScreen : MonoBehaviour {
                     attackString = itemString;
                 itemString = "left shift";
             }
+        }
 
-        if (Input.GetKeyDown("left alt"))
+        if (Input.GetKeyDown("left alt")) {
+            aS.PlayOneShot(sounds[0]);
             if (optionsPosition == 0)
             {
                 if (itemString.Equals("left alt"))
@@ -288,8 +303,10 @@ public class TitleScreen : MonoBehaviour {
                     attackString = itemString;
                 itemString = "left alt";
             }
+        }
 
-        if (Input.GetKeyDown("right ctrl"))
+        if (Input.GetKeyDown("right ctrl")) {
+            aS.PlayOneShot(sounds[0]);
             if (optionsPosition == 0) {
                 if (itemString.Equals("right ctrl"))
                     itemString = attackString;
@@ -300,8 +317,10 @@ public class TitleScreen : MonoBehaviour {
                     attackString = itemString;
                 itemString = "right ctrl";
             }
+        }
 
-        if (Input.GetKeyDown("right shift"))
+        if (Input.GetKeyDown("right shift")) {
+            aS.PlayOneShot(sounds[0]);
             if (optionsPosition == 0)
             {
                 if (itemString.Equals("right shift"))
@@ -314,8 +333,10 @@ public class TitleScreen : MonoBehaviour {
                     attackString = itemString;
                 itemString = "right shift";
             }
+        }
 
-        if (Input.GetKeyDown("right alt"))
+        if (Input.GetKeyDown("right alt")) {
+            aS.PlayOneShot(sounds[0]);
             if (optionsPosition == 0)
             {
                 if (itemString.Equals("right alt"))
@@ -328,9 +349,11 @@ public class TitleScreen : MonoBehaviour {
                     attackString = itemString;
                 itemString = "right alt";
             }
+        }
 
         for (int i = 0; i < 20; i++) {
             if (Input.GetKeyDown("joystick button " + i)) {
+                aS.PlayOneShot(sounds[0]);
                 if (optionsPosition == 0) {
                     if (itemStringJ.Equals("joystick button " + i))
                         itemStringJ = attackStringJ;
@@ -347,6 +370,8 @@ public class TitleScreen : MonoBehaviour {
     }
 
     void Start() {
+        aS = GetComponent<AudioSource>();
+
         signAngle = Quaternion.Euler(90f, 0f, 0f);
         notSelected = new Color(.8f, .8f, .8f, .8f);
         logoVanish = new Vector2(2f, 0f);
@@ -366,14 +391,14 @@ public class TitleScreen : MonoBehaviour {
 	    if (mainMenu) {
 		    if (Input.GetAxisRaw("Horizontal") == 1)
 			    if (inputStuff) {
-				    //PlayAudio(0);
+                    aS.PlayOneShot(sounds[0]);
 				    position = (position + 1) % spriteOff.Length;
 				    inputStuff = false;
 			    }
 
 		    if (Input.GetAxisRaw("Horizontal") == -1)
 			    if (inputStuff) {
-				    //PlayAudio(0);
+                    aS.PlayOneShot(sounds[0]);
 				    if (position == 0)
 					    position = spriteOff.Length - 1;
 				    else
@@ -392,13 +417,14 @@ public class TitleScreen : MonoBehaviour {
 
         if (optionsMenu) {
             if (Input.GetKeyDown(KeyCode.Escape)) {
+                aS.PlayOneShot(sounds[3]);
                 optionsMenu = false;
                 StartCoroutine(FromOptions());
             }
             
 		    if (Input.GetAxisRaw("Vertical") == -1)
 			    if (inputStuff) {
-                    //PlayAudio(0);
+                    aS.PlayOneShot(sounds[0]);
                     if (optionsPosition == 5)
                         optionsPosition = 0;
                     else
@@ -408,7 +434,7 @@ public class TitleScreen : MonoBehaviour {
 
 		    if (Input.GetAxisRaw("Vertical") == 1)
 			    if (inputStuff) {
-                    //PlayAudio(0);
+                    aS.PlayOneShot(sounds[0]);
                     if (optionsPosition == 0)
                         optionsPosition = 5 - 1;
                     else if (optionsPosition == 5)
@@ -422,19 +448,21 @@ public class TitleScreen : MonoBehaviour {
             if (Input.GetAxisRaw("Horizontal") != 0 && inputStuff)
             {
                 if (optionsPosition == 2) {
+                    aS.PlayOneShot(sounds[0]);
                     optionsSliders[0].value += Input.GetAxisRaw("Horizontal");
                     inputStuff = false;
                 }
                 else if (optionsPosition == 3) {
+                    aS.PlayOneShot(sounds[0]);
                     optionsSliders[1].value += Input.GetAxisRaw("Horizontal");
                     inputStuff = false;
                 }
                 else if (optionsPosition == 4) {
-                    //PlayAudio(0);
+                    aS.PlayOneShot(sounds[0]);
                     optionsPosition = 5;
                     inputStuff = false;
                 } else if (optionsPosition == 5) {
-                    //PlayAudio(0);
+                    aS.PlayOneShot(sounds[0]);
                     optionsPosition = 4;
                     inputStuff = false;
                 }
@@ -445,6 +473,7 @@ public class TitleScreen : MonoBehaviour {
 
 		    if (Input.GetKeyDown (KeyCode.Return) || Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown (KeyCode.KeypadEnter) || Input.GetKeyDown (KeyCode.JoystickButton0) || Input.GetKeyDown (KeyCode.JoystickButton7))
                 if (optionsPosition == 4) {
+                    aS.PlayOneShot(sounds[2]);
                     PlayerPrefs.SetString("atk", attackString);
                     PlayerPrefs.SetString("item", itemString);
                     PlayerPrefs.SetString("atkJ", attackStringJ);
@@ -457,11 +486,12 @@ public class TitleScreen : MonoBehaviour {
 
                 }
                 else if (optionsPosition == 5) {
+                    aS.PlayOneShot(sounds[3]);
                     optionsMenu = false;
                     StartCoroutine(FromOptions());
                 }
 
-            keyBindings();
+            if(optionsPosition <= 1) keyBindings();
 
             optionsVarTexts[0].text = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(attackString + " / " + attackStringJ);
             optionsVarTexts[1].text = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(itemString + " / " + itemStringJ);
