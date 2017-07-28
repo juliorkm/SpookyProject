@@ -3,7 +3,8 @@ using System.Collections;
 
 public class ItemEffects : MonoBehaviour {
 	public GameObject[] Fumacas;
-	public int PirulitoHeal;
+    public AudioClip[] Sounds;
+    public int PirulitoHeal;
 	public int CookieHeal;
 	public int BombomHeal;
 	public int BarraHeal;
@@ -29,6 +30,7 @@ public class ItemEffects : MonoBehaviour {
 		} else if (player.item [pos] == 4) {
 			//abobora
 			player.health += AboboraHeal;
+            player.aS.PlayOneShot(Sounds[0]);
             var v = Instantiate(Fumacas[1], player.transform.position, Quaternion.identity);
         } else if (player.item [pos] == 5) {
 			//zumbi

@@ -52,7 +52,7 @@ public class Fantasma : Enemy {
 								moveX = -x;
 						}
 					} else {
-                        Debug.Log(x);
+                        //Debug.Log(x);
 						if (x > 0) {
 							if (x > 1)
 								moveX = 1;
@@ -80,7 +80,7 @@ public class Fantasma : Enemy {
 					} else
 						moveY = 0f;
 
-                    Debug.Log("m" + moveX);
+                    //Debug.Log("m" + moveX);
                     moveDirection = new Vector2(moveX * horizontalSpeed, moveY * verticalSpeed);
                     speed = moveDirection.magnitude;
                     moveDirection.Normalize();

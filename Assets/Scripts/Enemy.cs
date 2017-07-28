@@ -124,6 +124,8 @@ public class Enemy : MonoBehaviour {
 		spawnDrop ();
 		anim.SetBool ("damaged", false);
 		anim.SetBool ("dead", true);
+        foreach (Transform t in GetComponentInChildren<Transform>()) if (t.name.EndsWith("Colliders"))
+                GameObject.Destroy(t.gameObject);
 		if (gameObject != null) Destroy (gameObject, anim.GetCurrentAnimatorStateInfo (0).length);
 	}
 

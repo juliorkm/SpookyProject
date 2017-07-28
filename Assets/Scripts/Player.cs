@@ -9,10 +9,12 @@ public class Player : MonoBehaviour {
 	[HideInInspector]
 	public bool paused = true;
 
-	public int maxHealth;
-	//[HideInInspector]
-	public int health;
+	public float maxHealth;
+	[HideInInspector]
+	public float health;
 	public float horizontalSpeed, verticalSpeed;
+    [HideInInspector]
+    public float speedMult = 1;
 	public float[] cooldowns;
 	public int[] item;
 
@@ -28,7 +30,8 @@ public class Player : MonoBehaviour {
     private AudioClip[] attackSounds;
     [SerializeField]
     private AudioClip[] hurtSounds;
-    private AudioSource aS;
+    [HideInInspector]
+    public AudioSource aS;
 
 	private float attack1CD;
 
@@ -122,7 +125,7 @@ public class Player : MonoBehaviour {
                 float horizontal = Input.GetAxisRaw("Horizontal");
                 float vertical = Input.GetAxisRaw("Vertical");
                 if (!stunned)
-                rb.velocity = new Vector3(horizontal * horizontalSpeed, vertical * verticalSpeed, 0f);
+                rb.velocity = new Vector3(horizontal * horizontalSpeed * speedMult, vertical * verticalSpeed * speedMult, 0f);
 
                 if (horizontal == 0 && vertical == 0)
                     anim.SetFloat("Moving", 0);
