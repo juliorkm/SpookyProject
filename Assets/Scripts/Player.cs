@@ -23,6 +23,8 @@ public class Player : MonoBehaviour {
 
 	[SerializeField]
 	private GameObject playerFumaca;
+    [HideInInspector]
+    public ParticleSystem healParticle;
 
     [SerializeField]
     private AudioClip hitSound;
@@ -312,6 +314,7 @@ public class Player : MonoBehaviour {
         cb = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviors>();
         iD = GameObject.Find("HUD").GetComponentInChildren<ItemDisplay>(true);
         aS = GetComponent<AudioSource>();
+        healParticle = GetComponentInChildren<ParticleSystem>();
 
         if (!PlayerPrefs.HasKey("atk")) PlayerPrefs.SetString("atk", "z");
         attackButton = PlayerPrefs.GetString("atk");

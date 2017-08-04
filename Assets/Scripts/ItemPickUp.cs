@@ -95,6 +95,7 @@ public class ItemPickUp : MonoBehaviour {
 				if ((int) itemID <= 3) {
 					if (player.health < player.maxHealth) {
 						player.health += healAmount;
+                        player.healParticle.Play();
 						if (gameObject != null) Destroy (gameObject);
 					}
 				} else {

@@ -62,7 +62,7 @@ public class Zumbi : Enemy {
                     speed = moveDirection.magnitude;
                     moveDirection.Normalize();
 				}
-			} else {
+			} else if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.ZumbiSpawn")) {
 				rb.velocity = Vector2.zero;
 				if (Mathf.Abs (x) > horizontalRange || Mathf.Abs (y) > verticalRange)
 					anim.SetBool ("chase", true);
@@ -104,8 +104,8 @@ public class Zumbi : Enemy {
                 }
                 else
                     rb.velocity = Vector2.zero;
-                var particle = Instantiate(hurtParticle, transform);
-                particle.transform.rotation = (hitFrom) ? Quaternion.Euler(0f, 0f, 330f) : Quaternion.Euler(0f, 0f, 150f);
+                hurtParticle.transform.rotation = (hitFrom) ? Quaternion.Euler(0f, 0f, 330f) : Quaternion.Euler(0f, 0f, 150f);
+                hurtParticle.Play();
             }
 			stunDuration -= Time.deltaTime;
 		} else if(anim.GetBool("damaged") && a.IsName("Base Layer.ZumbiHitstun")) {

@@ -6,6 +6,7 @@ public enum audioType{
     Ambiente, sFX
 }
 
+[RequireComponent(typeof(AudioSource))]
 public class SoundVolume : MonoBehaviour {
 
     [SerializeField]

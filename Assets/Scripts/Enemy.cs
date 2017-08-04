@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour {
 
 	public int maxHealth;
 	[HideInInspector]
-	public int health;
+	public float health;
 	public float horizontalSpeed, verticalSpeed;
 	[HideInInspector]
 	public float moveX, moveY;
@@ -41,8 +41,7 @@ public class Enemy : MonoBehaviour {
 
     [SerializeField]
     private GameObject fumaca;
-    [SerializeField]
-    protected GameObject hurtParticle;
+    protected ParticleSystem hurtParticle;
 
     [SerializeField]
     protected AudioClip[] sounds;
@@ -162,6 +161,7 @@ public class Enemy : MonoBehaviour {
 		anim = GetComponentInChildren<Animator> ();
         ik = FindObjectOfType<InstaKill>();
         aS = GetComponent<AudioSource>();
+        hurtParticle = GetComponentInChildren<ParticleSystem>();
 
 		findTarget ();
 
