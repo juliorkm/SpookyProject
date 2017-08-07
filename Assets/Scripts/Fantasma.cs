@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Fantasma : Enemy {
     
-    private SpriteRenderer spriteBody;
+	[HideInInspector]
+    public SpriteRenderer spriteBody;
     private SpriteRenderer spriteHands;
     private Animator animatorBody;
 
@@ -13,6 +14,9 @@ public class Fantasma : Enemy {
     [SerializeField]
     private float cooldown;
     private float timer = 0;
+
+	public GameObject fantasmaBola;
+	public float velocidadeBola;
 
     private EnemyManager em;
 
@@ -35,73 +39,61 @@ public class Fantasma : Enemy {
 			float x = gameObject.transform.position.x - target.transform.position.x;
 			float y = gameObject.transform.position.y - target.transform.position.y;
 			if (anim.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.Chasing")) {
-				print ("x: " + x + "; y: " + y);
 
                 if (!((Mathf.Abs (x) < horizontalRange + .001f && Mathf.Abs(x) > horizontalRange - .001f) && (Mathf.Abs (y) < verticalRange + .001f && Mathf.Abs(y) > verticalRange - .001f))) {
-                    //	anim.SetBool ("chase", false);
-                    //	rb.velocity = Vector2.zero;
-                    //} else {
+                    
                     float dirX, dirY;
-                    if (x > .001f)
-                        dirX = target.transform.position.x + horizontalRange;
-                    else if (x < -.001f)
-                        dirX = target.transform.position.x - horizontalRange;
+                    if (x > -.001f)
+                        dirX = target.transform.position.x + horizontalRange - .01f;
+                    else if (x < .001f)
+                        dirX = target.transform.position.x - horizontalRange + .01f;
                     else
                         dirX = 0f;
 
-                    if (y > .001f)
-                        dirY = target.transform.position.y + verticalRange;
-                    else if (y < -.001f)
-                        dirY = target.transform.position.y - verticalRange;
+                    if (y > -.001f)
+                        dirY = target.transform.position.y + verticalRange - .01f;
+                    else if (y < .001f)
+                        dirY = target.transform.position.y - verticalRange + .01f;
                     else
                         dirY = 0f;
 
                     moveDirection = new Vector2(dirX, dirY);
-                    if (Vector2.Distance(gameObject.transform.position, moveDirection) > .1f) {
-					    //moveDirection = new Vector2 ((Mathf.Abs(x) > horizontalRange) ? (target.transform.position.x - ((x > 0) ? horizontalRange : -horizontalRange)) : -(target.transform.position.x - ((x > 0) ? horizontalRange : -horizontalRange)),
-					    //	(Mathf.Abs(y) > verticalRange) ? (target.transform.position.y - ((y > 0) ? verticalRange : -verticalRange)) : -(target.transform.position.y - ((y > 0) ? verticalRange : -verticalRange)));
+                    if (Mathf.Abs(y) > verticalRange && ((moveDirection.x > 0 && x < 0) || (moveDirection.x < 0 && x > 0)))
+                        moveDirection = new Vector2(moveDirection.x / 2, moveDirection.y);
+                    if (Vector2.Distance(gameObject.transform.position, moveDirection) > .05f) {
                         moveDirection = moveDirection - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
                         moveDirection.Normalize();
-                        speed = ((moveDirection.x > 0 && x < 0) || (moveDirection.x < 0 && x > 0)) ? horizontalSpeed : verticalSpeed;
-					    //Debug.Log ("x: " + moveDirection.x + "; y: " + moveDirection.y);
+                        speed = horizontalSpeed;
 					    Vector2 direction = (moveDirection + em.avoidFriends (this)).normalized;
-                    /*
-					    x = direction.x;
-					    y = direction.y;
-					    if (Mathf.Abs (direction.x * speed) > horizontalSpeed)
-						    x = Mathf.Sign (direction.x * speed) * horizontalSpeed / speed;
-					    if (Mathf.Abs (direction.y * speed) > verticalSpeed)
-						    y = Mathf.Sign (direction.y * speed) * verticalSpeed / speed;
-					    if ((direction.x > 0 && !sr.flipX) || (direction.x < 0 && sr.flipX))
-						    x = 0f;
-                    */
 
-					    //CONSERTA
-					    //moveDirection = new Vector2(moveDirection.x, 0f);
-					    rb.velocity = direction * speed;
+    					rb.velocity = direction * speed;
                     }
-                else
-                    rb.velocity = Vector2.zero;
+                    else {
+                        rb.velocity = Vector2.zero;
+                        transform.position = moveDirection;
+                    }
                 }
 			} else {
 				rb.velocity = Vector2.zero;
-				//if (Mathf.Abs (x) > horizontalRange || Mathf.Abs (y) > verticalRange)
-				//	anim.SetBool ("chase", true);
 			}
-			//if (rb.velocity.Equals(Vector2.zero)) {
-				if (x < 0)
-					sr.flipX = true;
-				else if (x > 0)
-					sr.flipX = false;
-			//}
+			if (x < 0)
+				sr.flipX = true;
+			else if (x > 0)
+				sr.flipX = false;
 		}
 	}
 
     private void attack() {
 		if (!paused && !dead) {
-			if (timer == 0 || timer >= cooldown) {
-				//anim.SetBool ("atk", true);
-			}
+			if (Mathf.Abs(target.transform.position.x - transform.position.x) <= horizontalRange &&
+				Mathf.Abs(target.transform.position.y - transform.position.y) <= verticalRange) {
+				if (timer == 0 || timer >= cooldown) {
+					rb.velocity = Vector2.zero;
+					anim.SetBool("atk", true);
+					timer = 0;
+				} else anim.SetBool("atk", false);
+			} else anim.SetBool("atk", false);
+			timer += Time.deltaTime;
 		}
 	}
 
@@ -153,8 +145,8 @@ public class Fantasma : Enemy {
 
 			getHit (a);
 
-			if (!paused && timer != 0 && timer < cooldown)
-				timer += Time.deltaTime;
+			//if (!paused && timer != 0 && timer < cooldown)
+			//	timer += Time.deltaTime;
 
 			if (health <= 0) {
 				die ();

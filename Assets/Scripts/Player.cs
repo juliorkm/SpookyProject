@@ -355,7 +355,8 @@ public class Player : MonoBehaviour {
 			quickAttack ();
 			canAttack = true;
 		}
-		useItem ();
+        if (!dead)
+    		useItem ();
 		/*
 		if (stunned) {
 			anim.SetBool ("Damaged", true);
