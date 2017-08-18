@@ -64,7 +64,7 @@ public class FantasmaBall : MonoBehaviour {
 	void rotate() {
 		ballSprite.transform.rotation = Quaternion.Euler(new Vector3(ballSprite.transform.rotation.eulerAngles.x,
 			ballSprite.transform.rotation.eulerAngles.y,
-			ballSprite.transform.rotation.eulerAngles.z + Time.deltaTime * 1000));
+			ballSprite.transform.rotation.eulerAngles.z + Time.deltaTime * 1000 * - Mathf.Sign(speed)));
 	}
 
 	void movement() {

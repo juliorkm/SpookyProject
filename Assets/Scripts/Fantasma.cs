@@ -58,13 +58,19 @@ public class Fantasma : Enemy {
                         dirY = 0f;
 
                     moveDirection = new Vector2(dirX, dirY);
-                    if (Mathf.Abs(y) > verticalRange && ((moveDirection.x > 0 && x < 0) || (moveDirection.x < 0 && x > 0)))
-                        moveDirection = new Vector2(moveDirection.x / 2, moveDirection.y);
                     if (Vector2.Distance(gameObject.transform.position, moveDirection) > .05f) {
                         moveDirection = moveDirection - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
                         moveDirection.Normalize();
                         speed = horizontalSpeed;
 					    Vector2 direction = (moveDirection + em.avoidFriends (this)).normalized;
+
+                        //corta a velocidade quando backpedal
+                        if (Mathf.Abs(y) > verticalRange && ((direction.x > 0 && x > 0) || (direction.x < 0 && x < 0)))
+                            direction = new Vector2(direction.x / 2, direction.y);
+
+                        //fica parado nas "paredes" dos lados
+                        if (Mathf.Abs(transform.position.x) > 8 && Mathf.Sign(direction.x) == Mathf.Sign(transform.position.x))
+                            direction = new Vector2(0, direction.y);
 
     					rb.velocity = direction * speed;
                     }
