@@ -16,10 +16,13 @@ public class ItemPickUp : MonoBehaviour {
 	[SerializeField]
 	private int healAmount;
 
-	[SerializeField]
-	private Sprite[] sprites;
+    [SerializeField]
+    private Sprite[] sprites;
 
-	private CircleCollider2D cc;
+    [SerializeField]
+    private AudioClip ac;
+
+    private CircleCollider2D cc;
 	private SpriteRenderer sr;
 	private float scale;
 
@@ -94,29 +97,32 @@ public class ItemPickUp : MonoBehaviour {
 
 				if ((int) itemID <= 3) {
 					if (player.health < player.maxHealth) {
-						player.health += healAmount;
+                        player.aS.PlayOneShot(ac);
+                        player.health += healAmount;
                         player.healParticle.Play();
 						if (gameObject != null) Destroy (gameObject);
 					}
 				} else {
 
-					//BOTOES SEPARADOS OU FILA
-					///*
-					for (int i = 0; i < Player.N_ITEMS; i++) {
+                    //BOTOES SEPARADOS OU FILA
+                    ///*
+                    for (int i = 0; i < Player.N_ITEMS; i++) {
 						if (player.item [i] == -1) {
-							player.item [i] = (int) itemID;
+                            player.aS.PlayOneShot(ac);
+                            player.item [i] = (int) itemID;
 							GameObject.Find ("ItemManager").GetComponent<ItemDisplay> ().ItemIcons [i] = sr.sprite;
 							if (gameObject != null) Destroy (gameObject);
 							break;
 						}
 					}
-					//*/
+                    //*/
 
-					//PILHA
-					/*
+                    //PILHA
+                    /*
 				if (player.item [0] > -1) {
 					for (int i = 1; i < Player.N_ITEMS; i++) {
 						if (player.item [i] == -1) {
+                            player.aS.PlayOneShot(ac);
 							for (int j = i; j > 0; j--) {
 								player.item [j] = player.item [j - 1];
 							}
@@ -127,6 +133,7 @@ public class ItemPickUp : MonoBehaviour {
 				}
 
 				if (player.item [0] == -1) {
+                    player.aS.PlayOneShot(ac);
 					ItemDisplay iD = GameObject.Find ("ItemIcon").GetComponent<ItemDisplay> ();
 					player.item [0] = itemID;
 					for (int i = Player.N_ITEMS - 1; i > 0; i--)
@@ -135,8 +142,8 @@ public class ItemPickUp : MonoBehaviour {
 					Destroy (gameObject);
 				}
 				*/
-				}
-			}
+                }
+            }
 		}
 	}
 }

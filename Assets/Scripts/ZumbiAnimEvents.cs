@@ -22,7 +22,7 @@ public class ZumbiAnimEvents : MonoBehaviour {
         zumbi.rb.velocity = new Vector2(x,y) * zumbi.speed;
 	}
 
-	public void stopSpeed() {
+    public void stopSpeed() {
 		zumbi.rb.velocity = new Vector2 (0f, 0f);
         if (zumbi.knockedbackDuration > 0) StartCoroutine(zumbi.getKnockedback(zumbi.knockback, zumbi.knockedbackDuration));
 	}

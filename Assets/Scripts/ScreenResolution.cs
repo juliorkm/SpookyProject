@@ -44,6 +44,8 @@ public class ScreenResolution : MonoBehaviour {
 
     }
     void Update () {
+        //if (Input.GetKeyDown(KeyCode.P)) PlayerPrefs.DeleteAll();
+
         if ((float) Screen.width / (float) Screen.height != aspectWidth / aspectHeight) {
             float heightAccordingToWidth;
             float widthAccordingToHeight;

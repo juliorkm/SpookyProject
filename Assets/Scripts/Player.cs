@@ -384,5 +384,9 @@ public class Player : MonoBehaviour {
 			//StartCoroutine (enemy.hurt ());
 			//enemy.stunned = true;
 		}
+        else if (coll.gameObject.tag.Equals("EnemyHitbox")) {
+            aS.clip = hitSound;
+            aS.Play();
+        }
 	}
 }

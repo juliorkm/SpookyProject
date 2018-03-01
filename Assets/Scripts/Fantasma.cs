@@ -160,4 +160,15 @@ public class Fantasma : Enemy {
 			}
 		}
     }
+
+    private void OnTriggerEnter2D(Collider2D coll) {
+        if (coll.gameObject.tag.Equals(opponent + "Hitbox")) {
+            Player player = coll.gameObject.GetComponentInParent<Player>();
+            if (player != null) {
+                if (!player.dead)
+                    aS.PlayOneShot(hitSound);
+            }
+            else aS.PlayOneShot(hitSound);
+        }
+    }
 }

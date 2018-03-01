@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour {
     protected ParticleSystem hurtParticle;
 
     [SerializeField]
-    protected AudioClip[] sounds;
+    protected AudioClip hitSound;
     protected AudioSource aS;
 
     [HideInInspector]
@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour {
 		sr.flipX = direction;
 	}
 
-	protected void findTarget() {
+    protected void findTarget() {
 		if (!paused) {
 			GameObject[] allPlayers = GameObject.FindGameObjectsWithTag (opponent);
 			float dist = 99999;

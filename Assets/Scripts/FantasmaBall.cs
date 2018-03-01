@@ -97,13 +97,11 @@ public class FantasmaBall : MonoBehaviour {
 			Player player = coll.gameObject.GetComponentInParent<Player>();
 			if (player != null) {
 				if (!player.dead) {
-					aS.PlayOneShot(sounds[0]);
 					player.health -= damage;
 					player.stunnedFor = stunApplied;
 					player.hitFrom = (transform.position.x < player.transform.position.x) ? false : true;
 				}
 			} else {
-				aS.PlayOneShot(sounds[0]);
 				Enemy enemy = coll.gameObject.GetComponentInParent<Enemy>();
 				enemy.health -= damage;
 				enemy.stunDuration = stunApplied;

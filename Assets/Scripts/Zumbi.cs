@@ -86,8 +86,8 @@ public class Zumbi : Enemy {
 					else if (sr.flipX && hitbox.gameObject.name.Equals ("RightCollider1"))
 						currentHitbox = hitbox.gameObject;
 				}
-				anim.SetBool ("atk", true);
-			}
+                anim.SetBool ("atk", true);
+            }
 		}
 	}
 
@@ -120,15 +120,22 @@ public class Zumbi : Enemy {
 	}
 
 	public void createHitbox() {
-		currentHitbox.SetActive (true);
+        if (currentHitbox != null)
+		    currentHitbox.SetActive (true);
 	}
 
 	public void removeHitbox() {
-		currentHitbox.SetActive (false);
+        if (currentHitbox != null)
+            currentHitbox.SetActive (false);
 	}
 
-	// Update is called once per frame
-	void Update () {
+    private void Start() {
+        var aux = Random.Range(.85f, 1f);
+        sr.color = new Color(aux, aux, aux, 1f);
+    }
+
+    // Update is called once per frame
+    void Update () {
 		if (!dead) {
 			AnimatorStateInfo a = anim.GetCurrentAnimatorStateInfo (0);
 			float distance = 0;
@@ -146,7 +153,7 @@ public class Zumbi : Enemy {
 
 			getHit (a);
 
-			if (!paused && timer != 0 && timer < cooldown)
+            if (!paused && timer != 0 && timer < cooldown)
 				timer += Time.deltaTime;
 
 			if (health <= 0) {
@@ -161,7 +168,6 @@ public class Zumbi : Enemy {
 			Player player = coll.gameObject.GetComponentInParent<Player> ();
 			if (player != null) {
                 if (!player.dead) {
-                    aS.PlayOneShot(sounds[0]);
 				    player.health -= damage;
 				    player.stunnedFor = stunApplied;
                     player.hitFrom = (transform.position.x < player.transform.position.x) ? false : true;
@@ -169,7 +175,6 @@ public class Zumbi : Enemy {
                     player.knockedbackDuration = knockbackDuration;
                 }
 			} else {
-                aS.PlayOneShot(sounds[0]);
 				Enemy enemy = coll.gameObject.GetComponentInParent<Enemy> ();
 				enemy.health -= damage;
 				enemy.stunDuration = stunApplied;
@@ -178,5 +183,9 @@ public class Zumbi : Enemy {
                 enemy.knockedbackDuration = knockbackDuration;
             }
 		}
+        else if (coll.gameObject.tag.Equals(opponent + "Hitbox")) {
+            aS.clip = hitSound;
+            aS.Play();
+        }
 	}
 }

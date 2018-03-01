@@ -36,9 +36,9 @@ public class Spawner : MonoBehaviour {
     void spawnEnemy(int type) {
         if (type == 0) {
             if (Random.Range(0, 2) > 0)
-                Instantiate(enemies[0], new Vector3(10, Random.Range(-5f, 0f)), Quaternion.identity);
+                Instantiate(enemies[0], new Vector3(10, Random.Range(-6f, 0f)), Quaternion.identity);
             else
-                Instantiate(enemies[0], new Vector3(-10, Random.Range(-5f, 0f)), Quaternion.identity);
+                Instantiate(enemies[0], new Vector3(-10, Random.Range(-6f, 0f)), Quaternion.identity);
         }
         else if (type == 1) {
             Instantiate(enemies[1], new Vector3(Random.Range(-7f, 7f), Random.Range(-5f, 0f)), Quaternion.identity);
@@ -66,7 +66,7 @@ public class Spawner : MonoBehaviour {
 			time += Time.deltaTime;
 		}
         if (simulSpawn < maxSimulSpawn) {
-            var a = minSimulSpawn + enemiesSpawned / increaseSimulSpawn;
+            var a = minSimulSpawn + gm.score / 10 / increaseSimulSpawn;
             if (a <= maxSimulSpawn) simulSpawn = a;
         }
 	}

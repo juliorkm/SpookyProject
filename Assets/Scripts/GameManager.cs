@@ -16,25 +16,32 @@ public class GameManager : MonoBehaviour {
 	public int score = 0;
     public int hiscore;
 
+    private bool passedHiScore = false;
+
     //private CameraBehaviors cb;
 
     //private Transform[] hitboxes;
 
     IEnumerator GameOver() {
         //player.death ();
-        if (score > hiscore) PlayerPrefs.SetInt("hiscore", score);
-        PlayerPrefs.Save();
+        PlayerPrefs.SetInt("score", score);
 		yield return new WaitForSeconds (1.5f);
-		StartCoroutine (toTitle ());
+		StartCoroutine (ToPoints());
 	}
 
-	IEnumerator toTitle() {
-		float fadeTime = FindObjectOfType<FadeInOut>().BeginFade(1);
-		yield return new WaitForSeconds(fadeTime);
-		SceneManager.LoadScene(0);
-	}
+    IEnumerator ToTitle() {
+        float fadeTime = FindObjectOfType<FadeInOut>().BeginFade(1);
+        yield return new WaitForSeconds(fadeTime);
+        SceneManager.LoadScene(1);
+    }
 
-	void spawnItens() {
+    IEnumerator ToPoints() {
+        float fadeTime = FindObjectOfType<FadeInOut>().BeginFade(1);
+        yield return new WaitForSeconds(fadeTime);
+        SceneManager.LoadScene(2);
+    }
+
+    void spawnItens() {
 		foreach (GameObject go in items) {
 			Instantiate (go, new Vector3 (Random.Range (-4.5f, 4.5f), Random.Range(-3.5f, .5f)), Quaternion.identity);
 		}
@@ -61,10 +68,11 @@ public class GameManager : MonoBehaviour {
 		
 		//if (Input.GetKeyDown (KeyCode.Alpha1) || Input.GetKeyDown (KeyCode.JoystickButton4))
         //    cb.pulseCamera(.7f, .2f);
+        /*
 		if (Input.GetKeyDown (KeyCode.Space))
 			//player.health += 15;
 			spawnItens();
-        /*
+        
         if (Input.GetKeyDown (KeyCode.Alpha3))
 			//enemiesInt++;
 		if (Input.GetKeyDown (KeyCode.Alpha4)) {
@@ -76,7 +84,7 @@ public class GameManager : MonoBehaviour {
 		*/
 
 		if (Input.GetKeyDown (KeyCode.Escape))
-			StartCoroutine (toTitle ());
+			StartCoroutine (ToTitle());
 
 
 
@@ -96,7 +104,13 @@ public class GameManager : MonoBehaviour {
         float fill = ((float)player.health / (float)player.maxHealth)*.71f + .19f;
 		healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, fill, .3f);
 
+        if (!passedHiScore && score > hiscore) {
+            scoreText.enableVertexGradient = true;
+            Color yellow = new Color(1f, .882f, .212f);
+            scoreText.colorGradient = new VertexGradient(yellow, yellow, new Color(1f, .647f, 0f), Color.white);
+            passedHiScore = true;
+        }
         scoreText.text = score.ToString ();
-        hiscoreText.text = (hiscore > score ? hiscore : score).ToString();
+        hiscoreText.text = hiscore.ToString();
 	}
 }

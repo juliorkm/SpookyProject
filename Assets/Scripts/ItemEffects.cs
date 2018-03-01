@@ -18,16 +18,20 @@ public class ItemEffects : MonoBehaviour {
 		} else if (player.item [pos] == 0) {
 			//pirulito
 			player.health += PirulitoHeal;
-		} else if (player.item [pos] == 1) {
+            player.aS.PlayOneShot(Sounds[1]);
+        } else if (player.item [pos] == 1) {
 			//cookie
 			player.health += CookieHeal;
-		} else if (player.item [pos] == 2) {
+            player.aS.PlayOneShot(Sounds[1]);
+        } else if (player.item [pos] == 2) {
 			//bombom
 			player.health += BombomHeal;
-		} else if (player.item [pos] == 3) {
+            player.aS.PlayOneShot(Sounds[1]);
+        } else if (player.item [pos] == 3) {
 			//barra de chocolate
 			player.health += BarraHeal;
-		} else if (player.item [pos] == 4) {
+            player.aS.PlayOneShot(Sounds[1]);
+        } else if (player.item [pos] == 4) {
 			//abobora
 			player.health += AboboraHeal;
             player.aS.PlayOneShot(Sounds[0]);

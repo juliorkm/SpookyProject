@@ -177,8 +177,8 @@ public class TitleScreen : MonoBehaviour {
         itemString = PlayerPrefs.GetString("item");
         itemStringJ = PlayerPrefs.GetString("itemJ");
 
-        optionsVarTexts[0].text = attackString.ToUpper() + " / " + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(attackStringJ);
-        optionsVarTexts[1].text = itemString.ToUpper() + " / " + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(itemStringJ);
+        optionsVarTexts[0].text = attackString.ToUpper() + " / <sprite name=\"" + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(attackStringJ) + "\">";
+        optionsVarTexts[1].text = itemString.ToUpper() + " / <sprite name=\"" + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(itemStringJ) + "\">";
 
         selectOptionsButton(optionsPosition);
         while (90 - optionsSign.transform.eulerAngles.x < 89.5f) {
@@ -351,7 +351,7 @@ public class TitleScreen : MonoBehaviour {
             }
         }
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             if (Input.GetKeyDown("joystick button " + i)) {
                 aS.PlayOneShot(sounds[0]);
                 if (optionsPosition == 0) {
@@ -493,8 +493,8 @@ public class TitleScreen : MonoBehaviour {
 
             if(optionsPosition <= 1) keyBindings();
 
-            optionsVarTexts[0].text = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(attackString + " / " + attackStringJ);
-            optionsVarTexts[1].text = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(itemString + " / " + itemStringJ);
+            optionsVarTexts[0].text = attackString.ToUpper() + " / <sprite name=\"" + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(attackStringJ) + "\">";
+            optionsVarTexts[1].text = itemString.ToUpper() + " / <sprite name=\"" + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(itemStringJ) + "\">";
 
             selectOptionsButton (optionsPosition);
 

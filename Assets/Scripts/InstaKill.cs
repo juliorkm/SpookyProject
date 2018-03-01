@@ -29,6 +29,9 @@ public class InstaKill : MonoBehaviour {
     IEnumerator showWarning() {
         //StopCoroutine(showWarning());
         StopCoroutine(removeWarning());
+        StopCoroutine(removeWarning());
+        StopCoroutine(removeWarning());
+        StopCoroutine(removeWarning());
         warning.SetActive(true);
         warning.transform.localScale = new Vector2(.5f, 0f);
         while (warning.transform.localScale.y < .999f) {
@@ -38,6 +41,9 @@ public class InstaKill : MonoBehaviour {
     }
 
     IEnumerator removeWarning() {
+        StopCoroutine(showWarning());
+        StopCoroutine(showWarning());
+        StopCoroutine(showWarning());
         StopCoroutine(showWarning());
         //StopCoroutine(removeWarning());
         warning.SetActive(true);
